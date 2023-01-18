@@ -1,21 +1,46 @@
-//your code here
-function setDate() {
-    const now = new Date();
+let hour = document.querySelector(".hour-hand");
+let minute = document.querySelector(".min-hand");
+let second = document.querySelector(".second-hand");
 
-    const seconds = now.getSeconds();
-    const secondsDegrees = ((seconds / 60) * 360) + 90;
-    const secondHand = document.querySelector('.second-hand');
-    secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+let s = 0;
+let m = 0;
+let h = 0;
 
-    const mins = now.getMinutes();
-    const minsDegrees = ((mins / 60) * 360) + ((seconds/60)*6) + 90;
-    const minsHand = document.querySelector('.min-hand');
-    minsHand.style.transform = `rotate(${minsDegrees}deg)`;
+// main function
+function setClock() {
+   // inreament second count.
+   s++;
 
-    const hour = now.getHours();
-    const hourDegrees = ((hour / 12) * 360) + ((mins/60)*30) + 90;
-    const hourHand = document.querySelector('.hour-hand');
-    hourHand.style.transform = `rotate(${hourDegrees}deg)`;
-  }
+  // if second is reached to 60
+  // it's time to make second again 0 and increament minute.
+   if (s == 60) {
+      s = 0;
+      m++;
 
-  setInterval(setDate, 1000);
+	// if minute is reached to 60
+   // it's time to make minute again 0 and increament hour.
+      if (m == 60) {
+          m = 0;
+          h++;
+
+		  // hour can be maximum 24.
+		  // after that make it again 0
+          if (h == 24) {
+            h = 0;
+          }
+      }
+   }
+
+	// default we need '90deg' transform.
+	// second and minutes will go from 0 to 60
+	// so make css, 360/60 => 6
+   second.style.transform = `rotate(${ s*6 + 90 }deg)`;
+   minute.style.transform = `rotate(${ m*6 + 90 }deg)`;
+
+	// for hour 360/24 => 15
+   hour.style.transform = `rotate(${ h*15 + 90 }deg)`;
+}
+
+// set interval, so we can run 'setClock' function
+// after each second we calculate CSS.
+setInterval(setClock, 1000);
