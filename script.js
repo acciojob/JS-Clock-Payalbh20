@@ -1,38 +1,22 @@
-// grab a reference of every hands
+const secondHand = document.querySelector('.second-hand');
+const minsHand = document.querySelector('.min-hand');
+const hourHand = document.querySelector('.hour-hand');
 
-// hour hand
-let hourHand = document.querySelector('.hour-hand');
-// minute hand 
-let minuteHand = document.querySelector('.min-hand');
-// second hand
-let secondHand = document.querySelector('.second-hand');
+ function setDate() {
+  const now = new Date();
 
-// function that rotates the hands
-function rotate() {
-  // get the current Date object from which we can obtain the current hour, minute and second
-  const currentDate = new Date();
+  const seconds = now.getSeconds();
+  const secondsDegrees = ((seconds / 60) * 360) + 90;
+  secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
 
-  // get the hours, minutes and seconds
-  const hours = currentDate.getHours();
-  const minutes = currentDate.getMinutes();
-  const seconds = currentDate.getSeconds();
+  const mins = now.getMinutes();
+  const minsDegrees = ((mins / 60) * 360) + ((seconds/60)*6) + 90;
+  minsHand.style.transform = `rotate(${minsDegrees}deg)`;
 
-  // rotating fraction --> how many fraction to rotate for each hand.
-  const secondsFraction = seconds / 60;
-  const minutesFraction = (secondsFraction + minutes) / 60;
-  const hoursFraction = (minutesFraction + hours) / 12;
-
-  // actual deg to rotate
-  const secondsRotate = secondsFraction * 360;
-  const minutesRotate = minutesFraction * 360;
-  const hoursRotate = hoursFraction * 360;
-
-  // apply the rotate style to each element
-  // use backtick `` instead of single quotes ''
-  secondHand.style.transform = `rotate(${secondsRotate}deg)`;
-  minuteHand.style.transform = `rotate(${minutesRotate}deg)`;
-  hourHand.style.transform = `rotate(${hoursRotate}deg)`;
+  const hour = now.getHours();
+  const hourDegrees = ((hour / 12) * 360) + ((mins/60)*30) + 90;
+  hourHand.style.transform = `rotate(${hourDegrees}deg)`;
 }
 
-// for every 1000 milliseconds(ie, 1 second) interval, activate the rotate() function.
-setInterval(rotate, 1000);
+setInterval(setDate, 1000);
+setDate();
